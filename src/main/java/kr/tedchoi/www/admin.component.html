@@ -1,0 +1,95 @@
+<!-- MAIN CONTENT -->
+<div id="content">
+  <div class="row">
+    <sa-big-breadcrumbs [items]="[ '어드민 페이지' ]" icon="comments"></sa-big-breadcrumbs>
+  </div>
+
+  <sa-widgets-grid>
+    <div class="row">
+      <article class="col-xs-12 col-sm-12 col-md-12">
+
+        <sa-widget id="profile-left-wid-id-1" [colorbutton]="false" [editbutton]="false" [deletebutton]="false" [fullscreenbutton]="true"
+          color="blizzardBlue">
+          <header>
+            <span class="widget-icon"> <i class="fa fa-list"></i> </span>
+            <h2>사용자 신청 통계</h2>
+          </header>
+          <div>
+            <!-- widget content -->
+            <div class="widget-body">
+              <div class="row">
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-10  bigger92left4 ">
+                  <tabset>
+                    <tab>
+                      <ul class="nav nav-tabs">
+                        <li [class.active]="state=='default'" class="active">
+                          <a (click)="state= 'default'">신청자 정보</a>
+                        </li>
+                        <li [class.active]="state=='time'">
+                          <a (click)="state= 'time'">참여 신청 시간별</a>
+                        </li>
+                        <li [class.active]="state=='sex'">
+                          <a (click)="state='sex'">성별 / 나이 통계</a>
+                        </li>
+                      </ul>
+                      <tabset class="padding-10">
+                        <tab [active]="state == 'default'">
+                          <div class="col-sm-12">
+                            <div class="ui-widget-header" style="padding:4px 10px;border-bottom: 0 none">
+                              <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+                              <input #gb type="text" pInputText size="50" placeholder="Global Filter">
+                            </div>
+                          </div>
+                          <div class="col-sm-12">
+                            <p-dataTable [(value)]="users" [globalFilter]="gb" #dt tableStyleClass="" selectionMode="single" sortField="humanTime" [sortOrder]="-1"
+                              [paginator]="true" [pageLinks]="5" rows="15" [rowsPerPageOptions]="[15,30,50]">
+                              <p-column *ngFor="let col of defaultTableCols" [sortable]="true" [style]="col.style" [field]="col.field" [header]="col.header"></p-column>
+                            </p-dataTable>
+                            <!-- <p-footer>총 {{totalCnt}}명  ( 남: {{manCnt}}  여: {{womanCnt}} )</p-footer> -->
+                          </div>
+
+
+                        </tab>
+                        <tab [active]="state == 'time'">
+                          <div class="col-sm-4">
+                            <p-dataTable [(value)]="timeUsers" #dt2 tableStyleClass="" selectionMode="single" (onRowSelect)="onRowSelect($event)" sortField="dateTime"
+                              [sortOrder]="-1" [paginator]="true" [pageLinks]="5" rows="15" [rowsPerPageOptions]="[15,30,50]">
+                              <p-column *ngFor="let col of timeTableCols" [sortable]="true" [style]="col.style" [field]="col.field" [header]="col.header"></p-column>
+                            </p-dataTable>
+                          </div>
+                          <div class="col-sm-8" [hidden]="checkRightTableusers()">
+                            <p-dataTable [(value)]="rightTableUsers" #dt3 tableStyleClass="" selectionMode="single" sortField="humanTime" [sortOrder]="-1"
+                              [paginator]="true" [pageLinks]="5" rows="15" [rowsPerPageOptions]="[15,30,50]">
+                              <p-column *ngFor="let col of timeTableCols2" [sortable]="true" [style]="col.style" [field]="col.field" [header]="col.header"></p-column>
+                            </p-dataTable>
+                          </div>
+                        </tab>
+                        <tab [active]="state == 'sex'">
+
+                          <div class="col-sm-4">
+                              <h3>성별 통계</h3>
+                              <sa-chart-js type="doughnut" [data]="doughnutChart"></sa-chart-js>
+                          </div>
+                          <div class="col-sm-8"> 
+                            <h3>나이 통계</h3>
+                            <sa-chart-js type="bar" [data]="barChart"></sa-chart-js>
+                          </div>
+                        </tab>
+
+                      </tabset>
+                    </tab>
+                  </tabset>
+                </div>
+                <div class="col-sm-1">
+                </div>
+              </div>
+            </div>
+          </div>
+        </sa-widget>
+      </article>
+
+    </div>
+  </sa-widgets-grid>
+</div>
